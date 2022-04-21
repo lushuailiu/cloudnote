@@ -7,6 +7,7 @@ import com.cloudnote.util.DBUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UserDao {
@@ -71,6 +72,17 @@ public class UserDao {
             log.error("getUserByUserName执行失败!");
             e.printStackTrace();
         }
+
+        return user;
+    }
+
+    public CnUser getUserByNickAndNoUserId(String nick, long userId) {
+        String sql = "select * from cn_user where nick = ? and userId <> ?";
+
+        List<Object> params = new ArrayList<>();
+        params.add(nick);
+        params.add(userId);
+        CnUser user = (CnUser)BaseDao.queryRow(sql, params, CnUser.class);
 
         return user;
     }

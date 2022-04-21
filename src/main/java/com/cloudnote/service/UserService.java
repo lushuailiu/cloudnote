@@ -71,4 +71,29 @@ public class UserService {
 
         return  resultInfo;
     }
+
+    /**
+     * 1 合法
+     * 0 不合法
+     * @param nick
+     * @param userId
+     * @return
+     */
+    public ResultInfo checkNick(String nick, long userId) {
+        ResultInfo<Object> info = new ResultInfo<>();
+        info.setCode(1);
+        if (StrUtil.isBlank(nick)) {
+            info.setCode(0);
+            return info;
+        }
+
+        CnUser user = userDao.getUserByNickAndNoUserId(nick,userId);
+
+        if (user !=null) {
+            info.setCode(0);
+            return info;
+        }
+
+        return info;
+    }
 }

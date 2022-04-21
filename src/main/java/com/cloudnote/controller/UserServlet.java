@@ -53,7 +53,15 @@ public class UserServlet extends HttpServlet {
     private void updateUser(HttpServletRequest request, HttpServletResponse response) {
     }
 
-    private void checkNick(HttpServletRequest request, HttpServletResponse response) {
+    private void checkNick(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String nick = request.getParameter("nick");
+
+        HttpSession session = request.getSession();
+        CnUser user = (CnUser)session.getAttribute("user");
+
+       ResultInfo info  = userService.checkNick(nick,user.getUserId());
+
+        response.getWriter().write(info.getCode() + "");
     }
 
     private void userHead(HttpServletRequest request, HttpServletResponse response) throws IOException {

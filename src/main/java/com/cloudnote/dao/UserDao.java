@@ -7,7 +7,6 @@ import com.cloudnote.util.DBUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class UserDao {
@@ -85,5 +84,19 @@ public class UserDao {
         CnUser user = (CnUser)BaseDao.queryRow(sql, params, CnUser.class);
 
         return user;
+    }
+
+    public int updateUser(CnUser user) {
+        String sql = "update cn_user set nick = ?, mood = ?,head = ? where userId = ?";
+
+        ArrayList<Object> params = new ArrayList<>();
+        params.add(user.getNick());
+        params.add(user.getMood());
+        params.add(user.getHead());
+        params.add(user.getUserId());
+
+        int i = BaseDao.executeUpdate(sql, params);
+
+        return i;
     }
 }

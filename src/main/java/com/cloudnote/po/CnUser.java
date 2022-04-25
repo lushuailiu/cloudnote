@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 public class CnUser {
 
-  private long userId;
+  private int userId;
   private String uname;
   private String upwd;
   private String nick;

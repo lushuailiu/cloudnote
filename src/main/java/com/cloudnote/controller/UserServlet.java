@@ -5,15 +5,26 @@ import com.cloudnote.po.CnUser;
 import com.cloudnote.service.UserService;
 import com.cloudnote.vo.ResultInfo;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Iterator;
 
 @WebServlet("/user")
+@MultipartConfig
 public class UserServlet extends HttpServlet {
+
+    Logger logger = LoggerFactory.getLogger(UserServlet.class);
     // web层调用 service层
     private UserService userService = new UserService();
 
@@ -22,10 +33,12 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        logger.info("called userServlet");
         // 设置首页导航高亮
         request.setAttribute("menu_page", "user");
         // 接收用户行为
         String actionName = request.getParameter("actionName"); // 参数名前后保持一致(前台接收什么，后台就是什么)
+
         // 判断用户行为 调用对应方法
         if ("login".equals(actionName)) {
 
@@ -50,7 +63,42 @@ public class UserServlet extends HttpServlet {
 
     }
 
-    private void updateUser(HttpServletRequest request, HttpServletResponse response) {
+    private void updateUser(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String nickName = request.getParameter("nick");
+        String mood = request.getParameter("mood");
+
+        Part part = request.getPart("img");
+        String header = part.getHeader("Content-Disposition");
+
+        if (StrUtil.isBlank(header)) {
+            return;
+        }
+
+        String[] split = header.split(";");
+        String filename = split[2].substring(split[2].indexOf("=")+1).substring(split[2].lastIndexOf("//")+1).replace("\"", "");
+        String ext = filename.substring(filename.lastIndexOf(".")+1);
+        System.out.println(filename);
+        System.out.println(ext);
+
+
+        if ( !StrUtil.isBlank(filename)) {
+            String filePath = request.getServletContext().getRealPath("WEB-INF/upload/");
+
+            part.write(filePath + "\\" + filename);
+        }
+
+        HttpSession session = request.getSession();
+        CnUser user = (CnUser) session.getAttribute("user");
+        //ResultInfo info = userService.checkNick(nickName, user.getUserId());
+        user.setHead(filename);
+        user.setNick(nickName);
+        user.setMood(mood);
+        ResultInfo info  = userService.updateUser(user);
+
+        request.getSession().setAttribute("user",user);
+        request.setAttribute("resoultInfo",info);
+        request.getRequestDispatcher("user?actionName=userCenter");
+
     }
 
     private void checkNick(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -66,9 +114,9 @@ public class UserServlet extends HttpServlet {
 
     private void userHead(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String imageName = request.getParameter("imageName");
-        if(StrUtil.isBlank(imageName)) {
+        if(!StrUtil.isBlank(imageName)) {
             String realPath = request.getServletContext().getRealPath("/WEB-INF/upload/");
-            realPath += "404.jpg";
+            realPath += imageName;
             File file = new File(realPath);
             response.setContentType( "image/jpeg");
             FileUtils.copyFile(file,response.getOutputStream());

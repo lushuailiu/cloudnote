@@ -96,4 +96,17 @@ public class UserService {
 
         return info;
     }
+
+    public ResultInfo updateUser(CnUser user) {
+        ResultInfo<Object> info = new ResultInfo<>();
+
+        int i = userDao.updateUser(user);
+
+        if (i > 0) {
+            info.setCode(1);
+        }
+
+        info.setCode(0);
+        return info;
+    }
 }

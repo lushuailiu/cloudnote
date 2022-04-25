@@ -5,7 +5,7 @@
     <!--properties:设置全局变量 -->
     <properties>
         <!--LOG_HOME:指定当前日志存放的目录 -->
-        <property name="LOG_HOME">F:/logs</property>
+        <property name="LOG_HOME">E:/logs</property>
         <!--FILE_NAME:指定日志文件的名称 -->
         <property name="FILE_NAME">cn_log</property>
     </properties>
@@ -61,6 +61,7 @@
         <!--level日志级别: ALL < TRACE < DEBUG < INFO < WARN < ERROR < FATAL < OFF -->
         <Root level="info">
             <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFile" />
         </Root>
     </Loggers>
 </Configuration>

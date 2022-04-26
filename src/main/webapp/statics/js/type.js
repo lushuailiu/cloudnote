@@ -38,8 +38,9 @@ function deleteType(typeId){
 				typeId:typeId
 			},
 			success:function(result){
+				let parse = JSON.parse(result);
 				// 判断是否删除成功
-				if (result.code == 1) {
+				if (parse.code == 1) {
 					// 提示成功用户
 					swal("","<h3>删除成功！</h3>","success");
 					// 执行删除成功之后的DOM操作
@@ -165,8 +166,12 @@ $("#btn_submit").click(function () {
 			typeId:typeId
 		},
 		success:function (result) {
+			console.log(result)
+			console.log(result.code)
+			let parse = JSON.parse(result);
+			console.log(parse)
 			// 判断是否更新成功
-			if (result.code == 1) { // 如果code=1，表示成功，执行DOM操作
+			if (parse.code == 1) { // 如果code=1，表示成功，执行DOM操作
 				// 1. 关闭模态框
 				$("#myModal").modal("hide");
 				// TODO

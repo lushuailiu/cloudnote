@@ -33,7 +33,6 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        logger.info("called userServlet");
         // 设置首页导航高亮
         request.setAttribute("menu_page", "user");
         // 接收用户行为
@@ -97,7 +96,7 @@ public class UserServlet extends HttpServlet {
 
         request.getSession().setAttribute("user",user);
         request.setAttribute("resoultInfo",info);
-        request.getRequestDispatcher("user?actionName=userCenter");
+        request.getRequestDispatcher("user?actionName=userCenter").forward(request,response);
 
     }
 

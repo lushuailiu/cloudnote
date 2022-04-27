@@ -22,6 +22,13 @@
     <!-- 编辑器源码文件 -->
     <script type="text/javascript" src="statics/ueditor/ueditor.all.js"></script>
 
+    <!-- wangeditor富文本编辑器CDN引入 -->
+    <!-- 引入 css -->
+    <link href="statics/wangEditor/style.css" rel="stylesheet">
+
+    <!-- 引入 js -->
+    <script src="statics/wangEditor/index.min.js"></script>
+
     <style type="text/css">
         body {
             padding-top: 60px;

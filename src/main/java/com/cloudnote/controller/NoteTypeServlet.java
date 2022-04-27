@@ -37,7 +37,7 @@ public class NoteTypeServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 设置首页导航高亮
-        request.setAttribute("menu_page", "note");
+        request.setAttribute("menu_page", "type");
         // 接收用户行为
         String actionName = request.getParameter("actionName"); // 参数名前后保持一致(前台接收什么，后台就是什么)
 

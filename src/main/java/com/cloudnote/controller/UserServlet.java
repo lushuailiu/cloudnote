@@ -76,8 +76,7 @@ public class UserServlet extends HttpServlet {
         String[] split = header.split(";");
         String filename = split[2].substring(split[2].indexOf("=")+1).substring(split[2].lastIndexOf("//")+1).replace("\"", "");
         String ext = filename.substring(filename.lastIndexOf(".")+1);
-        System.out.println(filename);
-        System.out.println(ext);
+
 
 
         if ( !StrUtil.isBlank(filename)) {
